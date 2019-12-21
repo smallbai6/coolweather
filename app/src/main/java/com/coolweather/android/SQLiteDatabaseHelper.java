@@ -12,7 +12,9 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
             + "provinceCode integer)";
     public static final String CREATE_CITY = "create table City("
             + "id integer primary key autoincrement,"
-            + "cityName text)";
+            + "cityName text,"
+            +"cityCode integer,"
+            +"provinceId integer)";
     public static final String CREATE_COUNTY = "create table County("
             + "id integer primary key autoincrement,"
             + "countyName text,"
@@ -29,7 +31,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVINCE);
         db.execSQL(CREATE_CITY);
         db.execSQL(CREATE_COUNTY);
-        Log.d("a","a");
+        Log.d("SQLiteDatabasemy","a");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -37,6 +39,6 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists City");
         db.execSQL("drop table if exists Country");
         onCreate(db);
-        Log.d("b","b");
+        Log.d("SQLiteDatabasemy","b");
     }
 }
