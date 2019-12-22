@@ -18,12 +18,12 @@ public class City {
         return provinceId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getCityName() {
         return cityName;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCityName(String cityName) {

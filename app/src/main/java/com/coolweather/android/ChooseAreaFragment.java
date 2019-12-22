@@ -1,6 +1,7 @@
 package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -97,6 +98,13 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectCity = cityList.get(position);
                     queryCounties();
+                }else if(currentLevel==LEVEL_COUNTY){
+                    String weatherId=countyList.get(position).getWeatherId();
+                    Toast.makeText(getContext(),weatherId,Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weatherId",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -151,7 +159,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText.setText(selectProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
         cityList.clear();
-        Cursor cursor=db.query("City",null,"provinceId=?",new String[]{String.valueOf(selectProvince.getId())},null,null,null);
+        Cursor cursor=db.query("City",null,"provinceId=?",new String[]{String.valueOf(selectProvince.getProvinceCode())},null,null,null);
         if (cursor.moveToFirst()) {
             dataList.clear();
             int i=0;
@@ -185,7 +193,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText.setText(selectCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
         countyList.clear();
-        Cursor cursor=db.query("County",null,"cityId=?",new String[]{String.valueOf(selectCity.getId())},null,null,null);
+        Cursor cursor=db.query("County",null,"cityId=?",new String[]{String.valueOf(selectCity.getCityCode())},null,null,null);
         if (cursor.moveToFirst()) {
             dataList.clear();
             int i=0;
@@ -227,9 +235,9 @@ public class ChooseAreaFragment extends Fragment {
                 if ("province".equals(type)) {
                     result = Utility.handleProvinceResponse(db, responseText);
                 } else if ("city".equals(type)) {
-                    result = Utility.handleCityResponse(db, responseText, selectProvince.getId());
+                    result = Utility.handleCityResponse(db, responseText, selectProvince.getProvinceCode());
                 } else if ("county".equals(type)) {
-                    result = Utility.handleCountyResponse(db, responseText, selectCity.getId());
+                    result = Utility.handleCountyResponse(db, responseText, selectCity.getCityCode());
                 }
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {
