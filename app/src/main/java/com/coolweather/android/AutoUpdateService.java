@@ -22,20 +22,16 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class AutoUpdateService extends Service {
-    public AutoUpdateService() {
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        //throw new UnsupportedOperationException("Not yet implemented");
-        return null;
+       return null;
     }
     public int onStartCommand(Intent intent,int flags,int startId){
         updateWeather();
         updateBingPic();
         AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
-        int anHour=8*60*1000;
+        int anHour=8*60*60*1000;
         long triggerAtTime= SystemClock.elapsedRealtime()+anHour;
         Intent i=new Intent(this,AutoUpdateService.class);
         PendingIntent pi=PendingIntent.getService(this,0,i,0);
@@ -53,7 +49,7 @@ public class AutoUpdateService extends Service {
             Weather weather= Utility.handleWeatherResponse(weatherString);
             String weatherId=weather.basic.weatherId;
             String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
-            HttpUtil.sendOkHttpRequest(weatherId, new Callback() {
+            HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     e.printStackTrace();
